@@ -5,22 +5,40 @@ import java.util.Scanner;
 
 public class Game {    
 
+    /*                                          Mapa
+                                                ____     ______
+                                                |  |    |__  __|
+                                            ____|  |___ ___||____ _______ __
+                                            ____    ___ _________ _______ __
+                                                |  | 
+
+                                                |  |
+                                                |  |
+                                                |  |
+
+                                                |  |_____
+                                                |  |_____|
+                                                |  |
+
+
+
+     */
+
     public static void main(String[] args) throws InterruptedException{
 
         Scanner scan = new Scanner(System.in);
         
-        //                                                                    | HP | ATQ | DEF | EXP |  
-        byte menuChoice = 0, gameChoice, personagemStatus[] = new byte[] {  10,   4,    3,    0  }, inimigoStatus[] = new byte[4];
-        int rng;
-        String nomePersonagem;        
+        //                                                               | Lv | HP | ATQ | DEF | EXP |                                
+        byte menuChoice = 0, gameChoice, personagemStatus[] = new byte[] { 1,   10,   4,    3,    0  }, inimigoStatus[] = new byte[5], corredor = 0 ;
+        String personagemNome;        
 
         System.out.print("Digite o nome de seu personagem:\n> ");
-        nomePersonagem = scan.nextLine();
+        personagemNome = scan.nextLine();
         delay(2000);
 
         while (menuChoice != 3) {
 
-            System.out.println( "Bem vindo ao RPG de texto " + nomePersonagem + "!");
+            System.out.println( "Bem vindo ao RPG de texto " + personagemNome + "!");
             System.out.println( "O jogo só termina quando seu personagem morrer.");
             System.out.println( "O que gostaria de fazer?");
             System.out.println( "1 - Começar;");
@@ -32,11 +50,11 @@ public class Game {
             switch (menuChoice) {
                 
                 case 1:
-                                //HP
-                    while (personagemStatus[0] > 0) {
+
+                    do {
 
                         do {
-                            System.out.println("Você se encontra em um lugar desconhecido.\nHá um caminho a sua frente.");
+                            System.out.println("Você se encontra em um lugar desconhecido feito de tijolos de pedra.\nHá um caminho a sua frente.");
                             System.out.println("O que gostaria de fazer?");
                             System.out.println( "1 - Seguir caminho;");
                             System.out.println( "2 - Olhar ao redor;");
@@ -52,7 +70,7 @@ public class Game {
 
                                 case 2:
                                     System.out.println("Você olha ao redor...\nNão parece ter nada que chame atenção...");
-                                    delay(1000);
+                                    delay(2000);
                                     break;
                             
                                 default:
@@ -68,52 +86,92 @@ public class Game {
                             System.out.println("O que gostaria de fazer?");
                             System.out.println("1 - Ir para a esquerda;");
                             System.out.println("2 - Ir para a direita;");
-                            System.out.print("3 - Seguir reto.\n> ");
+                            System.out.print(  "3 - Seguir reto.\n> ");
                             gameChoice = scan.nextByte();
 
                             switch (gameChoice) {
 
                                 case 1:
-                                    System.out.println("Você decide seguir à esquerda...");  
-                                    delay(1000);                                                
+                                    System.out.println("Você decide seguir à esquerda...\nE percebe o ambiente mudar para o de uma floresta...");  
+                                    corredor = 3;
+                                    delay(2000);                                                
                                     break;
 
                                 case 2:
-                                    System.out.println("Você decide seguir à direita...");
-                                    delay(1000);
+                                    System.out.println("Você decide seguir à direita...\nE percebe o interior mudar para o de uma caverna...");
+                                    corredor = 1;
+                                    delay(2000);
                                     break;
                             
                                 case 3:
                                     System.err.println("Você decide seguir reto...");
-                                    delay(1000);
+                                    corredor = 2;
+                                    delay(2000);
                                     break;
 
                                 default:
                                     System.err.println("Mesmo não sendo uma opção você decide não fazer nada...");
-                                    delay(1000);
+                                    delay(2000);
                                     break;
                             }
 
                         } while (gameChoice > 3 || gameChoice < 1);
 
-                        if (rng() >= 1) {
+                        if (rng() >= 16) {
 
-
+                            System.out.println("Você acaba acionando uma armadilha e perde -2 de vida.");
+                            personagemStatus[1] -= 2;
+                            System.out.println("Vida atual: " + personagemStatus[1]);
+                            delay(1000);
 
                         }
+
+                        do {
+                            
+                            System.out.println("Conforme você avança pelo caminho, você sente que está sendo observado...");
+                            if (corredor == 3) {
+
+                                System.out.println("Você percebe um caminho estreito à sua esquerda...");
+                                System.out.println("O que gostaria de fazer?");
+                                System.out.println("1 - Seguir o caminho;");
+                                System.out.println("2 - Ir para a passagem estreita.");
+
+                                
+                            }   else {
+
+                                    System.out.println("O que gostaria de fazer?");
+                                    System.out.println("1 - Seguir o caminho;");
+
+                                }
+
+                            switch (gameChoice) {
+                                case 1:
+                                          
+                                    break;
+                            
+                                default:
+                                    System.out.println("Mesmo não sendo uma opção você decide não fazer nada...");
+                                    break;
+                            }
+                            
+
+                        } while (gameChoice != 0);
                         
-                    }
+                    //              HP
+                    } while (personagemStatus[1] > 0);
                                         
                     break;
                 
                 case 2:
-                    System.out.println("_________________________");   
-                    System.out.println(  "|\tVida:\t"   + personagemStatus[0] +   "\t|");
-                    System.out.println(  "|\tAtaque:\t" + personagemStatus[1] +   "\t|");   
-                    System.out.println(  "|\tDefesa:\t" + personagemStatus[2] +   "\t|");
-                    System.out.println(  "|\tExp:\t"    + personagemStatus[3] +   "\t|");
+                    System.out.println("_________________________");
+                    System.out.println(  "|\tNome:\t"   + personagemNome      +   "\t|"); 
+                    System.out.println(  "|\tNível:\t"  + personagemStatus[0] +   "\t|"); 
+                    System.out.println(  "|\tVida:\t"   + personagemStatus[1] +   "\t|");
+                    System.out.println(  "|\tAtaque:\t" + personagemStatus[2] +   "\t|");   
+                    System.out.println(  "|\tDefesa:\t" + personagemStatus[3] +   "\t|");
+                    System.out.println(  "|\tExp:\t"    + personagemStatus[4] +   "\t|");
                     System.out.println("|_______________________|");
-                    delay(3000);
+                    delay(4000);
                     break;
 
                 case 3:
@@ -122,6 +180,7 @@ public class Game {
 
                 default:
                     System.out.println("Opção inválida.");
+                    delay(1000);
                     break;
             }
             
@@ -131,14 +190,15 @@ public class Game {
         
     }
 
-    //Da um valor de delay para as "telas"
+    //Da um valor de delay para as "telas" e "limpa" a "tela".
     public static void delay(int n) throws InterruptedException {
 
         Thread.sleep(n);
-        System.out.println("\n\n\n\n\n");
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
 
     }
 
+    // Random number generator para usos variados
     public static int rng() {
 
         Random random = new Random();
@@ -146,5 +206,6 @@ public class Game {
 
         return rng;
     }
+    
 
 }
