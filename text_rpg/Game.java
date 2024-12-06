@@ -190,6 +190,12 @@ public class Game {
         
     }
 
+    public static void dialogo(byte gameChoice) {
+
+        
+
+    }
+
     //Da um valor de delay para as "telas" e "limpa" a "tela".
     public static void delay(int n) throws InterruptedException {
 
@@ -205,7 +211,6 @@ public class Game {
         int rng = random.nextInt(1, 21);
 
         return rng;
-    }
-    
+    }    
 
 }
