@@ -24,13 +24,13 @@ public class Game {
 
      */
 
-    public static void main(String[] args) throws InterruptedException{
+     //                                                               | Lv | HP | ATQ | DEF | EXP |  
+     byte menuChoice = 0, gameChoice, personagemStatus[] = new byte[] { 1,   10,   4,    3,    0  }, inimigoStatus[], corredor = 0 ;
+     String personagemNome, inimigoNome;
 
-        Scanner scan = new Scanner(System.in);
-        
-        //                                                               | Lv | HP | ATQ | DEF | EXP |                                
-        byte menuChoice = 0, gameChoice, personagemStatus[] = new byte[] { 1,   10,   4,    3,    0  }, inimigoStatus[] = new byte[5], corredor = 0 ;
-        String personagemNome;        
+     Scanner scan = new Scanner(System.in);
+
+    public void main(String[] args) throws InterruptedException{ 
 
         System.out.print("Digite o nome de seu personagem:\n> ");
         personagemNome = scan.nextLine();
@@ -117,14 +117,7 @@ public class Game {
 
                         } while (gameChoice > 3 || gameChoice < 1);
 
-                        if (rng() >= 16) {
-
-                            System.out.println("Você acaba acionando uma armadilha e perde -2 de vida.");
-                            personagemStatus[1] -= 2;
-                            System.out.println("Vida atual: " + personagemStatus[1]);
-                            delay(1000);
-
-                        }
+                        trap();
 
                         do {
                             
@@ -190,9 +183,91 @@ public class Game {
         
     }
 
-    public static void dialogo(byte gameChoice) {
+    public void battle() {
+
+        if (corredor == 1) {
+            
+            inimigoNome = "Lobo cinzento";
+            inimigoStatus = new byte[] {2, 6, 4, 1, 7};
+            
+        }   else if (corredor == 2) {
+
+                inimigoNome = "Golem de pedra";
+                inimigoStatus = new byte[] {2, 8, 1, 3, 10};
+            
+            }   else if (corredor == 3) {
+
+                    inimigoNome = "Goblin";
+                    inimigoStatus = new byte[] {2, 4, 2, 2, 5};
+                
+                }
 
         
+        System.out.println("Você se depara com um " + inimigoNome + "!");
+        do {
+
+            System.out.println("O que gostaria de fazer?");
+            System.out.println("1 - Atacar;");
+            System.out.println("2 - Defender;");
+            System.out.print("3 - Tentar fugir.\n> ");
+            gameChoice = scan.nextByte();
+
+            switch (gameChoice) {
+                case 1:
+
+                    System.out.println("Você ataca o " + inimigoNome);                        
+                    if (rng(1, 21) >= 16) {
+
+                        System.out.println("Você deu um acerto crítico e causou " + (personagemStatus[2] * 2 - inimigoStatus[3]) + " de dano!");
+                        //   Hp inimigo  -=   ATQ personagem    * 2 -  DEF inimigo
+                        inimigoStatus[1] -= personagemStatus[2] * 2 - inimigoStatus[3];
+
+                    }   else {
+
+                            System.out.println("Você causou " + (personagemStatus[2] - inimigoStatus[3]) + " de dano.");
+                            //HP inimigo     -=    ATQ personagem   -  DEF inimigo
+                            inimigoStatus[1] -= personagemStatus[2] - inimigoStatus[3];
+
+                        }
+                    
+                    break;
+
+                case 2:
+
+                    System.out.println("Você decide se preparar para receber o golpe do " + inimigoNome);
+
+                    if (personagemStatus[3] * 2 - inimigoStatus[2] > 1) {
+
+                        personagemStatus[1]--;
+
+                    }   else {
+
+                            personagemStatus[1] -= personagemStatus[3] * 2 - inimigoStatus[2];                        
+
+                        }
+
+
+                    break;
+            
+                default:
+                    break;
+            }
+            
+        } while (personagemStatus[1] > 0 || inimigoStatus[1] > 0);
+
+    }
+
+    public void trap() throws InterruptedException {
+
+        if (rng(1, 21) >= 16) {
+
+            System.out.println("Você acaba acionando uma armadilha e perde -2 de vida.");
+            personagemStatus[1] -= 2;
+
+            System.out.println("Vida atual: " + personagemStatus[1]);
+            delay(1000);
+
+        }
 
     }
 
@@ -205,10 +280,10 @@ public class Game {
     }
 
     // Random number generator para usos variados
-    public static int rng() {
+    public static int rng(int lI, int lS) {
 
         Random random = new Random();
-        int rng = random.nextInt(1, 21);
+        int rng = random.nextInt(lI, lS);
 
         return rng;
     }    
