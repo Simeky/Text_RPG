@@ -15,7 +15,7 @@ public class Game {
     Autores:
         Guilherme Carsten Rayser
         Vinicius Henrique Grossert
-     */
+    */
     public static void main(String[] args) throws InterruptedException{
         
         do {
