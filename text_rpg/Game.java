@@ -6,13 +6,13 @@ import java.util.Scanner;
 public class Game {
  
     static byte menuChoice, gameChoice, corredor = 0;
-    static String personagemNome, inimigoNome;
-    static int personagemStatus[], vidaMax, inimigoStatus[];
+    static String charName, enemyName;
+    static int charStatus[], maxHp, enemyStatus[];
     static boolean escape;
     static Scanner scan = new Scanner(System.in);
 
     /*
-    Autores:
+    Authors:
         Guilherme Carsten Rayser
         Vinicius Henrique Grossert
     */
@@ -22,10 +22,10 @@ public class Game {
             
             System.out.println("Min 1 caractéres\tMax 7 caractéres");
             System.out.print("Digite o nome de seu personagem:\n> ");
-            personagemNome = scan.nextLine();
+            charName = scan.nextLine();
             delay(1000);
             
-        } while (personagemNome.length() > 7 || personagemNome.length() < 1);
+        } while (charName.length() > 7 || charName.length() < 1);
 
         
         menu();        
@@ -40,11 +40,11 @@ public class Game {
         do {
 
             //                           | Lv | HP | ATQ | DEF | XP |
-            personagemStatus = new int[] { 1,   10,  10,   10,    0  };
-            vidaMax = 10;
+            charStatus = new int[] { 1,   10,  10,   10,    0  };
+            maxHp = 10;
 
 
-            System.out.println( "Bem vindo ao RPG de texto " + personagemNome + "!");
+            System.out.println( "Bem vindo ao RPG de texto " + charName + "!");
             System.out.println( "O jogo só termina quando seu personagem morrer ou quando o chefe for derrotado.");
             System.out.println( "O que gostaria de fazer?");
             System.out.println( "1 - Começar;");
@@ -85,8 +85,8 @@ public class Game {
     public static void game() throws InterruptedException {
 
         //                            | Lv | HP | ATQ | DEF | EXP |  
-        personagemStatus = new int[] { 1,   10,   10,    10,    0  };
-        vidaMax = 10;
+        charStatus = new int[] { 1,   10,   10,    10,    0  };
+        maxHp = 10;
 
         System.out.println("Você se encontra em um lugar desconhecido feito de tijolos de pedra.\nHá um caminho a sua frente.");
 
@@ -160,14 +160,14 @@ public class Game {
         
         for (byte i = 0; i < 4; i++) {
 
-            if (personagemStatus[1] < 1) {
+            if (charStatus[1] < 1) {
 
                 break;
 
             }
 
             trap();
-            continuar();
+            progress();
 
         }   
         
@@ -175,10 +175,10 @@ public class Game {
         
         bossRoom();
 
-        if (personagemStatus[1] < 1) {
+        if (charStatus[1] < 1) {
             
             System.out.println("Você morreu...");
-            personagemStatus[1] = 0;
+            charStatus[1] = 0;
             status();
 
         }   else {
@@ -194,7 +194,7 @@ public class Game {
 
         do {
 
-            if (personagemStatus[1] < 1) {
+            if (charStatus[1] < 1) {
 
                 break;
                 
@@ -223,16 +223,16 @@ public class Game {
 
             battle(true);
 
-        } while(inimigoStatus[1] > 0);
+        } while(enemyStatus[1] > 0);
 
     }
     
-    //Avançando no caminho;
-    public static void continuar() throws InterruptedException {        
+    //Avançando no caminho
+    public static void progress() throws InterruptedException {        
 
         do {
 
-            if (personagemStatus[1] < 1) {
+            if (charStatus[1] < 1) {
 
                 break;
 
@@ -269,24 +269,24 @@ public class Game {
 
             if (corredor == 1) {
             
-                inimigoNome = "Lobo cinzento";
-                inimigoStatus = new int[] {2 , 10, 9, 1, 8};
+                enemyName = "Lobo cinzento";
+                enemyStatus = new int[] {2 , 10, 9, 1, 8};
                 
             }   else if (corredor == 2) {
     
-                    inimigoNome = "Golem de pedra";
-                    inimigoStatus = new int[] {2, 15, 5, 5, 10};
+                    enemyName = "Golem de pedra";
+                    enemyStatus = new int[] {2, 15, 5, 5, 10};
                 
                 }   else if (corredor == 3) {
     
-                        inimigoNome = "Goblin";
-                        inimigoStatus = new int[] {2, 10, 7, 3, 5};
+                        enemyName = "Goblin";
+                        enemyStatus = new int[] {2, 10, 7, 3, 5};
                     
                     }  
                     
-            for (byte i = 0; i < inimigoStatus.length; i++) {
+            for (byte i = 0; i < enemyStatus.length; i++) {
 
-                inimigoStatus[i] *= personagemStatus[0];
+                enemyStatus[i] *= charStatus[0];
                 
             }
             
@@ -294,34 +294,34 @@ public class Game {
 
                 if (corredor == 1) {
 
-                    inimigoNome = "\033[31mAsher, o Lobo Infernal\033[0m";
-                    inimigoStatus = new int[] {10, 100, 40, 10 , 1};
+                    enemyName = "\033[31mAsher, o Lobo Infernal\033[0m";
+                    enemyStatus = new int[] {10, 100, 40, 10 , 1};
 
                 }   else if(corredor == 2) {
 
-                        inimigoNome = "\033[38;5;214mAstregor, o Guardião caído\033[0m";
-                        inimigoStatus = new int[] {20, 200, 80, 60 , 2};
+                        enemyName = "\033[38;5;214mAstregor, o Guardião caído\033[0m";
+                        enemyStatus = new int[] {20, 200, 80, 60 , 2};
 
                     }   else if(corredor == 3) {
 
-                            inimigoNome = "\033[32mZarklim, o Rei Goblin\033[0m";
-                            inimigoStatus = new int[] {8, 60, 30, 15 , 3};
+                            enemyName = "\033[32mZarklim, o Rei Goblin\033[0m";
+                            enemyStatus = new int[] {8, 60, 30, 15 , 3};
 
                         }
 
         }
 
-        System.out.println("Você se depara com um " + inimigoNome + "!");
+        System.out.println("Você se depara com um " + enemyName + "!");
         delay(2000);
         do {
 
-            if (personagemStatus[1] < 1) {
+            if (charStatus[1] < 1) {
 
                 break;
 
             }
 
-            System.out.println("\033[38;5;196mVida:\033[0m " + personagemStatus[1] + "/" + vidaMax);
+            System.out.println("\033[38;5;196mVida:\033[0m " + charStatus[1] + "/" + maxHp);
             System.out.println("O que gostaria de fazer?");
             System.out.println("1 - Atacar;");
             System.out.println("2 - Defender;");
@@ -334,11 +334,11 @@ public class Game {
 
                 case 1:
 
-                    System.out.println("Você ataca o " + inimigoNome + "...");
+                    System.out.println("Você ataca o " + enemyName + "...");
 
-                    if (boss == true && inimigoNome == "\033[38;5;214mAstregor, o Guardião caído\033[0m" && rng(1, 21) >= 15) {
+                    if (boss == true && enemyName == "\033[38;5;214mAstregor, o Guardião caído\033[0m" && rng(1, 21) >= 15) {
 
-                        System.out.println(inimigoNome + " armou suas defesas e ignorou todo o dano recebido...");
+                        System.out.println(enemyName + " armou suas defesas e ignorou todo o dano recebido...");
                         delay(2000);
                         break;
                         
@@ -346,29 +346,29 @@ public class Game {
 
                     if (rng(1, 21) >= 16) {               
                         
-                        if ((personagemStatus[2] * 2) - inimigoStatus[3] < 1) {
+                        if ((charStatus[2] * 2) - enemyStatus[3] < 1) {
 
                             System.out.println("Você deu um acerto crítico e causou\033[33m 1\033[0m de dano!");
-                            inimigoStatus[1]--;
+                            enemyStatus[1]--;
     
                         }   else {
 
-                                System.out.println("Você deu um acerto crítico e causou \033[33m" + ((personagemStatus[2] * 2) - inimigoStatus[3]) + "\033[0m de dano!");
-                                inimigoStatus[1] -= (personagemStatus[2] * 2) - inimigoStatus[3];                        
+                                System.out.println("Você deu um acerto crítico e causou \033[33m" + ((charStatus[2] * 2) - enemyStatus[3]) + "\033[0m de dano!");
+                                enemyStatus[1] -= (charStatus[2] * 2) - enemyStatus[3];                        
     
                             }
 
                     }   else { 
 
-                            if ((personagemStatus[2] - inimigoStatus[3]) < 1) {
+                            if ((charStatus[2] - enemyStatus[3]) < 1) {
 
                                 System.out.println("Você causou\033[31m 1\033[0m de dano.");
-                                inimigoStatus[1]--;
+                                enemyStatus[1]--;
         
                             }   else {
 
-                                    System.out.println("Você causou \033[31m" + (personagemStatus[2] - inimigoStatus[3]) + "\033[0m de dano!");
-                                    inimigoStatus[1] -= (personagemStatus[2] - inimigoStatus[3]);                        
+                                    System.out.println("Você causou \033[31m" + (charStatus[2] - enemyStatus[3]) + "\033[0m de dano!");
+                                    enemyStatus[1] -= (charStatus[2] - enemyStatus[3]);                        
         
                                 }
 
@@ -376,7 +376,7 @@ public class Game {
                         
                     delay(2000);
                         
-                    if (inimigoStatus[1] <= 0) {
+                    if (enemyStatus[1] <= 0) {
 
                         break;
                         
@@ -384,11 +384,11 @@ public class Game {
     
                     if (boss == true) {
                         
-                        inimigoAtaque(true);
+                        enemyAtack(true);
 
                     }   else {
 
-                            inimigoAtaque(false);
+                            enemyAtack(false);
 
                     }  
 
@@ -398,21 +398,21 @@ public class Game {
 
                 case 2: 
 
-                    System.out.println("Você decide se preparar para receber o golpe do " + inimigoNome + "...");
+                    System.out.println("Você decide se preparar para receber o golpe do " + enemyName + "...");
 
-                    personagemStatus[3] *= 2;
+                    charStatus[3] *= 2;
 
                     if (boss == true) {
                         
-                        inimigoAtaque(true);
+                        enemyAtack(true);
 
                     }   else {
 
-                            inimigoAtaque(false);
+                            enemyAtack(false);
 
                     }  
 
-                    personagemStatus[3] /= 2;
+                    charStatus[3] /= 2;
 
                     delay(1800);
 
@@ -422,22 +422,22 @@ public class Game {
 
                     if (rng(1 , 21) > 17 && boss == false) {
 
-                        System.out.println("Você tenta escapar e consegue fugir do " + inimigoNome + "!");
+                        System.out.println("Você tenta escapar e consegue fugir do " + enemyName + "!");
                         escape = true;
                         delay(1700);
                         break;
 
                     }   else if (rng(1, 21) > 10) {
 
-                            System.out.println("Você tenta escapar mas o " + inimigoNome + " bloqueia sua passagem.");
+                            System.out.println("Você tenta escapar mas o " + enemyName + " bloqueia sua passagem.");
                             escape = false;
                             delay(1700);
 
                     }   else {
 
                             System.out.println("Você tenta escapar, você tropeça, cai, e perde\033[31m 2\033[0m de vida" );
-                            personagemStatus[1] -= 2;
-                            System.out.println("Vida atual: " + personagemStatus[1]);
+                            charStatus[1] -= 2;
+                            System.out.println("Vida atual: " + charStatus[1]);
                             escape = false;
                             delay(1700);
 
@@ -445,11 +445,11 @@ public class Game {
 
                     if (boss == true) {
                         
-                        inimigoAtaque(true);
+                        enemyAtack(true);
 
                     }   else if (boss == false && escape == false) {
 
-                            inimigoAtaque(false);
+                            enemyAtack(false);
 
                     }  
 
@@ -457,59 +457,59 @@ public class Game {
 
             }
 
-            if (inimigoStatus[1] < 1) {
+            if (enemyStatus[1] < 1) {
 
-                System.out.println("Você derrotou " + inimigoNome + " e ganhou \033[31m" + inimigoStatus[4] + "\033[0m de EXP.");
+                System.out.println("Você derrotou " + enemyName + " e ganhou \033[31m" + enemyStatus[4] + "\033[0m de EXP.");
                 levelUp();            
                 
             }
             
-        } while (personagemStatus[1] > 0 && inimigoStatus[1] > 0 && escape == false);
+        } while (charStatus[1] > 0 && enemyStatus[1] > 0 && escape == false);
 
     }
 
-    public static void inimigoAtaque(boolean boss) {
+    public static void enemyAtack(boolean boss) {
 
-        if (boss ==  true && rng(1, 21) >= 18 && inimigoNome == "\033[31mAsher, o Lobo Infernal\033[0m") {
+        if (boss ==  true && rng(1, 21) >= 18 && enemyName == "\033[31mAsher, o Lobo Infernal\033[0m") {
 
-            System.out.println(inimigoNome + " imbuiu suas garras e presas em magma ardente e ignorou suas defesas...");
-            System.out.println("Causando \033[31m" + inimigoStatus[2] +  "\033[0m de dano!!!");
-            personagemStatus[1] -= inimigoStatus[2];
+            System.out.println(enemyName + " imbuiu suas garras e presas em magma ardente e ignorou suas defesas...");
+            System.out.println("Causando \033[31m" + enemyStatus[2] +  "\033[0m de dano!!!");
+            charStatus[1] -= enemyStatus[2];
             
-        }   else if (boss == true && rng(1, 21) >= 15 && inimigoNome == "\033[38;5;214mAstregor, o Guardião caído\033[0m") {
+        }   else if (boss == true && rng(1, 21) >= 15 && enemyName == "\033[38;5;214mAstregor, o Guardião caído\033[0m") {
 
-                System.out.println(inimigoNome + " concentra a energia de seu núcleo perdendo -10 de vida e ganhando +2 de defesa...");
-                inimigoStatus[1] -= 10;
-                inimigoStatus[3] += 2;
+                System.out.println(enemyName + " concentra a energia de seu núcleo perdendo -10 de vida e ganhando +2 de defesa...");
+                enemyStatus[1] -= 10;
+                enemyStatus[3] += 2;
 
-                if (inimigoStatus[1] > 0) {
+                if (enemyStatus[1] > 0) {
 
-                    System.out.println("Causando \033[31m" + (inimigoStatus[2] * 0.5 + inimigoStatus[3] - personagemStatus[3]) + "\033[0m de dano!!!" ); 
-                    personagemStatus[1] -= inimigoStatus[2] * 0.5 + inimigoStatus[3] - personagemStatus[3];            
+                    System.out.println("Causando \033[31m" + (enemyStatus[2] * 0.5 + enemyStatus[3] - charStatus[3]) + "\033[0m de dano!!!" ); 
+                    charStatus[1] -= enemyStatus[2] * 0.5 + enemyStatus[3] - charStatus[3];            
                     
                 }   else {
 
-                        System.out.println(inimigoNome + " se explodiu...");
+                        System.out.println(enemyName + " se explodiu...");
 
                     }
             
-            }   else if (boss == true && rng(1, 21) >= 15 && inimigoNome == "\033[32mZarklim, o Rei Goblin\033[0m") {
+            }   else if (boss == true && rng(1, 21) >= 15 && enemyName == "\033[32mZarklim, o Rei Goblin\033[0m") {
 
-                    System.out.println(inimigoNome + " chama dois de seus suditos para atacarem junto com ele...");
-                    System.out.println("Causando \033[31m" + (inimigoStatus[2] + 2 * 8 - personagemStatus[3]) + "\033[0m de dano!!!");
+                    System.out.println(enemyName + " chama dois de seus suditos para atacarem junto com ele...");
+                    System.out.println("Causando \033[31m" + (enemyStatus[2] + 2 * 8 - charStatus[3]) + "\033[0m de dano!!!");
                 
                 } else {
 
-                    if ((inimigoStatus[2] - personagemStatus[3]) < 1) {
+                    if ((enemyStatus[2] - charStatus[3]) < 1) {
                                 
-                        System.out.println(inimigoNome + " lhe causou\033[31m 1 \033[0mde dano.");
-                        personagemStatus[1]--;
+                        System.out.println(enemyName + " lhe causou\033[31m 1 \033[0mde dano.");
+                        charStatus[1]--;
             
                     }   else {
             
-                            System.out.println(inimigoNome + " lhe causou \033[31m" + (inimigoStatus[2] - personagemStatus[3]) + "\033[0m de dano.");
+                            System.out.println(enemyName + " lhe causou \033[31m" + (enemyStatus[2] - charStatus[3]) + "\033[0m de dano.");
                             //HP personagem     -=    ATQ inimigo   -  DEF personagem
-                            personagemStatus[1] -= (inimigoStatus[2] - personagemStatus[3]);                           
+                            charStatus[1] -= (enemyStatus[2] - charStatus[3]);                           
             
                         }
 
@@ -519,28 +519,28 @@ public class Game {
 
     public static void levelUp() throws InterruptedException {
 
-        personagemStatus[4] += inimigoStatus[4];
+        charStatus[4] += enemyStatus[4];
 
-        while (personagemStatus[4] >= 10) {
+        while (charStatus[4] >= 10) {
             
-            personagemStatus[4] -= 10;
-            personagemStatus[0]++;
+            charStatus[4] -= 10;
+            charStatus[0]++;
     
-            System.out.println("Parabéns! Você agora está no nível " + personagemStatus[0] + ".");
+            System.out.println("Parabéns! Você agora está no nível " + charStatus[0] + ".");
                 
-            vidaMax += 10;
-            personagemStatus[1] = vidaMax;
+            maxHp += 10;
+            charStatus[1] = maxHp;
     
             if (rng(1, 21) <= 10) {
     
-                personagemStatus[2] += 5;
-                personagemStatus[3] += 3;
+                charStatus[2] += 5;
+                charStatus[3] += 3;
                 status();
     
             }   else {
     
-                    personagemStatus[2] += 3;
-                    personagemStatus[3] += 5;
+                    charStatus[2] += 3;
+                    charStatus[3] += 5;
                     status();
     
                 }    
@@ -552,25 +552,26 @@ public class Game {
     public static void status() throws InterruptedException {
 
         System.out.println("_________________________");
-        System.out.println(  "|\tNome:\t"   + personagemNome      +   "\t|"); 
-        System.out.println(  "|\tNível:\t"  + personagemStatus[0] +   "\t|"); 
-        System.out.println(  "|\tVida:\t"   + personagemStatus[1] + "/" + vidaMax +  "\t|");
-        System.out.println(  "|\tAtaque:\t" + personagemStatus[2] +   "\t|");   
-        System.out.println(  "|\tDefesa:\t" + personagemStatus[3] +   "\t|");
-        System.out.println(  "|\tExp:\t"    + personagemStatus[4] +   "\t|");
+        System.out.println(  "|\tNome:\t"   + charName      +   "\t|"); 
+        System.out.println(  "|\tNível:\t"  + charStatus[0] +   "\t|"); 
+        System.out.println(  "|\tVida:\t"   + charStatus[1] + "/" + maxHp +  "\t|");
+        System.out.println(  "|\tAtaque:\t" + charStatus[2] +   "\t|");   
+        System.out.println(  "|\tDefesa:\t" + charStatus[3] +   "\t|");
+        System.out.println(  "|\tExp:\t"    + charStatus[4] +   "\t|");
         System.out.println("|_______________________|");
         delay(4000);
 
     }
 
+    //Verifica se caiu numa armadilha
     public static void trap() throws InterruptedException {
 
         if (rng(1, 21) >= 16) {
 
             System.out.println("Você acaba acionando uma armadilha e perde\033[31m -2\033[0m de vida.");
-            personagemStatus[1] -= 2;
+            charStatus[1] -= 2;
 
-            System.out.println("Vida atual: " + personagemStatus[1]);
+            System.out.println("Vida atual: " + charStatus[1]);
             delay(2000);
 
         }
@@ -585,7 +586,7 @@ public class Game {
 
     }
 
-    // Random number generator para usos variados
+    // Random number generator para usos variados.
     public static int rng(int lI, int lS) {
 
         Random random = new Random();
