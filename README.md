@@ -2,8 +2,8 @@
 Trabalho de implementação
 
 Autores: 
-        Guilherme Carsten Rayser
-        Vinicius Henrique Grossert
+        Guilherme Carsten Rayser,
+        Vinicius Henrique Grossert.
 
 Trabalho realizado na instituição UniSENAI
 Curso: Tecnólogo em análise e desenvolvimento de sistemas
